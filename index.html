@@ -14,15 +14,20 @@
             overflow: hidden;
         }
 
-        /* Background FBI Logos */
+        /* FBI Logos in 4 Corners */
         .fbi-logo {
-            position: absolute;
+            position: fixed;
             width: 150px;
             opacity: 0.08;
             user-select: none;
         }
 
-        /* White glowing floating particles */
+        .top-left { top: 10px; left: 10px; }
+        .top-right { top: 10px; right: 10px; }
+        .bottom-left { bottom: 10px; left: 10px; }
+        .bottom-right { bottom: 10px; right: 10px; }
+
+        /* Floating glowing white particles */
         .particle {
             position: absolute;
             width: 5px;
@@ -120,17 +125,17 @@
 </head>
 <body>
 
-    <!-- FBI Background Logos -->
-    <img src="images/fbi-logo.png" class="fbi-logo" style="top: 10%; left: 100%;">
-    <img src="images/fbi-logo.png" class="fbi-logo" style="top: 10%; right: 100%;">
-    <img src="images/fbi-logo.png" class="fbi-logo" style="bottom: 3000%; left: 100%;">
-    <img src="images/fbi-logo.png" class="fbi-logo" style="bottom: 3000%; right: 100%;">
+    <!-- FBI Logos in 4 Corners -->
+    <img src="images/fbi-logo.png" class="fbi-logo top-left">
+    <img src="images/fbi-logo.png" class="fbi-logo top-right">
+    <img src="images/fbi-logo.png" class="fbi-logo bottom-left">
+    <img src="images/fbi-logo.png" class="fbi-logo bottom-right">
 
     <h1 style="text-align: center;">Mafia List</h1>
 
     <div class="mafia-list">
         <div class="mafia-item" onclick="toggleDetails('mafia1')">
-            <img src="mafia1-logo.jpg" alt="Mafia Logo" class="mafia-logo">
+            <img src="images/mafia1-logo.jpg" alt="Mafia Logo" class="mafia-logo">
             <span>Mafia 1</span>
         </div>
         <div id="mafia1" class="mafia-details">
@@ -139,9 +144,9 @@
             <p>This is a dangerous mafia group known for its influence and power.</p>
             <div class="carousel-container">
                 <button class="carousel-btn prev" onclick="changeImage(-1, 'mafia1-images')">❮</button>
-                <img src="mafia1-image1.jpg" class="carousel-image mafia1-images active">
-                <img src="mafia1-image2.jpg" class="carousel-image mafia1-images">
-                <img src="mafia1-image3.jpg" class="carousel-image mafia1-images">
+                <img src="images/mafia1-image1.jpg" class="carousel-image mafia1-images active">
+                <img src="images/mafia1-image2.jpg" class="carousel-image mafia1-images">
+                <img src="images/mafia1-image3.jpg" class="carousel-image mafia1-images">
                 <button class="carousel-btn next" onclick="changeImage(1, 'mafia1-images')">❯</button>
             </div>
         </div>

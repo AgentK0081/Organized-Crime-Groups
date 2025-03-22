@@ -3,236 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mafia List</title>
+    <title>Wanted Report</title>
     <style>
-        /* General Styles */
         body {
-            background-color: #0a0a0a;
+            background-color: #0d0d0d;
             color: white;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 250px;
-            background: #111;
-            height: 100vh;
-            overflow-y: auto;
-            padding-top: 20px;
-            position: fixed;
-        }
-
-        .sidebar h2 {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .mafia-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .mafia-list li {
-            padding: 15px;
-            border-bottom: 1px solid #222;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-        }
-
-        .mafia-list li:hover {
-            background: #222;
-        }
-
-        .mafia-list img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-            border-radius: 5px;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 270px;
-            padding: 20px;
-            width: calc(100% - 270px);
-        }
-
-        .mafia-details {
-            display: none;
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .mafia-details h2 {
-            margin-top: 0;
-        }
-
-        .mafia-details a {
-            color: #7289da;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .carousel {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin: auto;
             overflow: hidden;
+            position: relative;
         }
 
-        .carousel img {
-            width: 100%;
-            display: none;
-            border-radius: 8px;
+        /* Background Animation */
+        @keyframes moveBackground {
+            from { background-position: 0 0; }
+            to { background-position: 0 100%; }
         }
 
-        .carousel img.active {
-            display: block;
-        }
-
-        .carousel .prev, .carousel .next {
+        body::before {
+            content: "";
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .carousel .prev {
-            left: 10px;
-        }
-
-        .carousel .next {
-            right: 10px;
-        }
-
-        /* Background Design */
-        .background {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 300%;
+            background: linear-gradient(to bottom, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0));
+            animation: moveBackground 10s linear infinite;
             z-index: -1;
-            pointer-events: none;
         }
 
-        .fbi-logo {
-            position: absolute;
-            width: 120px;
-            opacity: 0.1;
+        h1 {
+            color: #ff3333;
+            text-shadow: 0 0 10px red;
         }
 
-        .fbi-top-left { top: 10px; left: 10px; }
-        .fbi-top-right { top: 10px; right: 10px; }
-        .fbi-bottom-left { bottom: 10px; left: 10px; }
-        .fbi-bottom-right { bottom: 10px; right: 10px; }
-
-        .light-effect {
-            position: absolute;
-            width: 5px;
-            height: 10px;
-            background: white;
-            opacity: 0.4;
-            animation: floatUp 5s linear infinite;
+        #wanted-list {
+            width: 50%;
+            margin: auto;
+            text-align: left;
         }
 
-        @keyframes floatUp {
-            from { transform: translateY(100vh); opacity: 0.4; }
-            to { transform: translateY(-10px); opacity: 0; }
+        .wanted-item {
+            background-color: #1a1a1a;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Hover and Click Effects */
+        .wanted-item:hover,
+        .wanted-item.active {
+            box-shadow: 0 0 15px red;
+            border: 1px solid red;
+        }
+
+        .details {
+            display: none;
+            padding: 10px;
+            background-color: #262626;
+            border-left: 3px solid red;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        /* Light Glow Effect */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px red; }
+            50% { box-shadow: 0 0 20px red; }
+            100% { box-shadow: 0 0 5px red; }
+        }
+
+        .wanted-item.active {
+            animation: glow 1.5s infinite alternate;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Mafia List</h2>
-        <ul class="mafia-list">
-            <li onclick="showDetails('LC Black Region', 'https://www.roblox.com/communities/32947012/LC-Black-Region#!/about', 'A powerful mafia ruling the dark corners of the city.', ['image1.jpg', 'image2.jpg'])">
-                <img src="lc_black_logo.png" alt="LC Black">
-                LC Black Region
-            </li>
-            <li onclick="showDetails('Staff Team', 'https://www.roblox.com/communities/33657066/Staff-Team#!/about', 'An elite enforcement team maintaining order.', ['image3.jpg', 'image4.jpg'])">
-                <img src="staff_logo.png" alt="Staff Team">
-                Staff Team
-            </li>
-            <li onclick="showDetails('彡Slayers彡', 'https://www.roblox.com/communities/33703067/91#!/about', 'A deadly assassin group feared by all.', ['image5.jpg', 'image6.jpg'])">
-                <img src="slayers_logo.png" alt="Slayers">
-                彡Slayers彡
-            </li>
-        </ul>
-    </div>
+    <h1>🔴 Wanted Report 🔴</h1>
+    
+    <div id="wanted-list">
+        <div class="wanted-item" onclick="toggleDetails(this)">
+            <strong>ItsWillian</strong>
+            <div class="details">
+                <p><strong>Reason:</strong> 2x Firing on Officer, 1x Bank Robbery, 1x Robbery</p>
+            </div>
+        </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="mafia-details" id="mafia-details">
-            <h2 id="mafia-name"></h2>
-            <a id="mafia-link" href="#" target="_blank"></a>
-            <p id="mafia-description"></p>
+        <div class="wanted-item" onclick="toggleDetails(this)">
+            <strong>ExploitBan</strong>
+            <div class="details">
+                <p><strong>Reason:</strong> Officer murder</p>
+            </div>
+        </div>
 
-            <!-- Image Carousel -->
-            <div class="carousel">
-                <button class="prev" onclick="prevImage()">❮</button>
-                <img id="carousel-image" class="active" src="">
-                <button class="next" onclick="nextImage()">❯</button>
+        <div class="wanted-item" onclick="toggleDetails(this)">
+            <strong>Akori4e</strong>
+            <div class="details">
+                <p><strong>Reason:</strong> Shooting multiple officers and FBI members</p>
+                <p><strong>Details:</strong> The girls don't stop shooting, very dangerous.</p>
+            </div>
+        </div>
+
+        <div class="wanted-item" onclick="toggleDetails(this)">
+            <strong>Luke_R2D2</strong>
+            <div class="details">
+                <p><strong>Reason:</strong> Murdering an Agent</p>
+                <p><strong>Details:</strong> Suspect said it's from TPC.</p>
+            </div>
+        </div>
+
+        <div class="wanted-item" onclick="toggleDetails(this)">
+            <strong>DarkVader_47</strong>
+            <div class="details">
+                <p><strong>Reason:</strong> Murder on federal agent, x3 Evasion, x1 ATM Robbery</p>
+                <p><strong>Details:</strong> Drives a black Bullhorn Determinator SFP, plate: DEMON.</p>
             </div>
         </div>
     </div>
 
-    <!-- Background Design -->
-    <div class="background">
-        <img src="images/fbi-logo.png" class="fbi-logo fbi-top-left">
-        <img src="images/fbi-logo.png" class="fbi-logo fbi-top-right">
-        <img src="images/fbi-logo.png" class="fbi-logo fbi-bottom-left">
-        <img src="images/fbi-logo.png" class="fbi-logo fbi-bottom-right">
-    </div>
-
     <script>
-        let images = [];
-        let currentIndex = 0;
+        function toggleDetails(element) {
+            let details = element.querySelector(".details");
+            let allItems = document.querySelectorAll(".wanted-item");
+            
+            allItems.forEach(item => {
+                if (item !== element) {
+                    item.classList.remove("active");
+                    item.querySelector(".details").style.display = "none";
+                }
+            });
 
-        function showDetails(name, link, description, imageArray) {
-            document.getElementById('mafia-name').textContent = name;
-            document.getElementById('mafia-link').textContent = "Visit Roblox Group";
-            document.getElementById('mafia-link').href = link;
-            document.getElementById('mafia-description').textContent = description;
-            document.getElementById('mafia-details').style.display = "block";
-
-            images = imageArray;
-            currentIndex = 0;
-            document.getElementById('carousel-image').src = images[currentIndex];
+            if (details.style.display === "block") {
+                details.style.display = "none";
+                element.classList.remove("active");
+            } else {
+                details.style.display = "block";
+                element.classList.add("active");
+            }
         }
-
-        function prevImage() {
-            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
-            document.getElementById('carousel-image').src = images[currentIndex];
-        }
-
-        function nextImage() {
-            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
-            document.getElementById('carousel-image').src = images[currentIndex];
-        }
-
-        // Light effect animation
-        setInterval(() => {
-            let light = document.createElement("div");
-            light.classList.add("light-effect");
-            light.style.left = `${Math.random() * 100}vw`;
-            document.body.appendChild(light);
-            setTimeout(() => light.remove(), 5000);
-        }, 500);
     </script>
 
 </body>

@@ -147,7 +147,7 @@
                 return;
             }
 
-            matchedUsers.forEach(async (user) => {
+            for (const user of matchedUsers) {
                 let threatClass = getThreatClass(user.threat);
                 let avatarUrl = await getRobloxAvatar(user.username);
 
@@ -165,7 +165,7 @@
                         </div>
                     </div>
                 `;
-            });
+            }
         }
 
         function getThreatClass(level) {
@@ -180,20 +180,20 @@
 
         async function getRobloxAvatar(username) {
             try {
-                let userResponse = await fetch(`https://users.roblox.com/v1/usernames/users`, {
+                let userResponse = await fetch("https://users.roblox.com/v1/usernames/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
                 });
 
                 let userData = await userResponse.json();
-                if (!userData.data.length) return "https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png"; // Default image
+                if (!userData.data.length) return "https://tr.rbxcdn.com/default_avatar.png"; // Default image
 
                 let userId = userData.data[0].id;
                 return `https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=150&height=150&format=png`;
             } catch (error) {
                 console.error("Error fetching avatar:", error);
-                return "https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png"; // Default image
+                return "https://tr.rbxcdn.com/default_avatar.png"; // Default image
             }
         }
     </script>

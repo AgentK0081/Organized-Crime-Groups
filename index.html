@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanted Report</title>
+    <title>FBI TEAM ROBLOX Criminal Database</title>
     <style>
         body {
-            background-color: #0d0d0d;
+            background-color: #0b0f19;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: "Arial", sans-serif;
             text-align: center;
-            overflow: hidden;
+            padding-top: 30px;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -32,25 +33,66 @@
             z-index: -1;
         }
 
-        h1 {
-            color: #ff3333;
+        #header {
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #141922;
+            padding: 15px;
+            border-bottom: 3px solid #ff3333;
             text-shadow: 0 0 10px red;
         }
 
-        #wanted-list {
-            width: 50%;
-            margin: auto;
+        #search-container {
+            margin: 20px auto;
+            width: 60%;
+            background-color: #141922;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid white;
+            background-color: #1e232a;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff3333;
+        }
+
+        #results {
+            margin-top: 20px;
             text-align: left;
         }
 
         .wanted-item {
             background-color: #1a1a1a;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px auto;
+            width: 60%;
             border-radius: 5px;
             cursor: pointer;
             position: relative;
             transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         /* Hover and Click Effects */
@@ -79,57 +121,69 @@
         .wanted-item.active {
             animation: glow 1.5s infinite alternate;
         }
+
+        .threat-level {
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .low { background-color: green; color: white; }
+        .medium { background-color: orange; color: black; }
+        .high { background-color: red; color: white; }
+        .critical { background-color: darkred; color: white; }
     </style>
 </head>
 <body>
 
-    <h1>🔴 Wanted Report 🔴</h1>
-    
-    <div id="wanted-list">
-        <div class="wanted-item" onclick="toggleDetails(this)">
-            <strong>ItsWillian</strong>
-            <div class="details">
-                <p><strong>Reason:</strong> 2x Firing on Officer, 1x Bank Robbery, 1x Robbery</p>
-            </div>
-        </div>
+    <div id="header">FBI TEAM ROBLOX Criminal Database</div>
 
-        <div class="wanted-item" onclick="toggleDetails(this)">
-            <strong>ExploitBan</strong>
-            <div class="details">
-                <p><strong>Reason:</strong> Officer murder</p>
-            </div>
-        </div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a suspect...">
+        <button onclick="search()">🔍 Search</button>
+    </div>
 
-        <div class="wanted-item" onclick="toggleDetails(this)">
-            <strong>Akori4e</strong>
-            <div class="details">
-                <p><strong>Reason:</strong> Shooting multiple officers and FBI members</p>
-                <p><strong>Details:</strong> The girls don't stop shooting, very dangerous.</p>
-            </div>
-        </div>
-
-        <div class="wanted-item" onclick="toggleDetails(this)">
-            <strong>Luke_R2D2</strong>
-            <div class="details">
-                <p><strong>Reason:</strong> Murdering an Agent</p>
-                <p><strong>Details:</strong> Suspect said it's from TPC.</p>
-            </div>
-        </div>
-
-        <div class="wanted-item" onclick="toggleDetails(this)">
-            <strong>DarkVader_47</strong>
-            <div class="details">
-                <p><strong>Reason:</strong> Murder on federal agent, x3 Evasion, x1 ATM Robbery</p>
-                <p><strong>Details:</strong> Drives a black Bullhorn Determinator SFP, plate: DEMON.</p>
-            </div>
-        </div>
+    <div id="results">
+        <!-- Suspect list will be populated here -->
     </div>
 
     <script>
+        // Database of suspects
+        const users = [
+            { username: "ItsWillian", reason: "2x Firing on Officer, 1x Bank Robbery, 1x Robbery", details: "N/A", threat: "High" },
+            { username: "ExploitBan", reason: "Officer murders, Agent murders and is a mafia member.", details: "N/A", threat: "Critical" },
+            { username: "Akori4e", reason: "Shooting multiple officers and FBI members", details: "The girl doesn't stop shooting, very dangerous.", threat: "Critical" },
+            { username: "LUKE_R2D2", reason: "Murdering an Agent", details: "Suspect said it's from TPC.", threat: "High" },
+            { username: "UhOkayz", reason: "Officer murder after investigation", details: "N/A", threat: "High" },
+            { username: "Oaudyi", reason: "Possible contract killer", details: "Ordered to kill us by 2 masked people.", threat: "Critical" },
+            { username: "cxnnor_bsbl217", reason: "Mass Murder of FBI agents, cops and civilians", details: "N/A", threat: "Critical" }
+        ];
+
+        function displayUsers(userList) {
+            let resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            userList.forEach(user => {
+                let threatClass = getThreatClass(user.threat);
+                resultsDiv.innerHTML += `
+                    <div class="wanted-item" onclick="toggleDetails(this)">
+                        <strong>🔴 ${user.username}</strong>
+                        <div class="details">
+                            <p><strong>Reason:</strong> ${user.reason}</p>
+                            <p><strong>Details:</strong> ${user.details}</p>
+                            <p><strong>Threat Level:</strong> <span class="threat-level ${threatClass}">${user.threat}</span></p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
         function toggleDetails(element) {
             let details = element.querySelector(".details");
             let allItems = document.querySelectorAll(".wanted-item");
-            
+
             allItems.forEach(item => {
                 if (item !== element) {
                     item.classList.remove("active");
@@ -145,6 +199,25 @@
                 element.classList.add("active");
             }
         }
+
+        function search() {
+            let query = document.getElementById("search-bar").value.toLowerCase();
+            let filteredUsers = users.filter(user => user.username.toLowerCase().includes(query));
+            displayUsers(filteredUsers);
+        }
+
+        function getThreatClass(level) {
+            switch (level) {
+                case "Low": return "low";
+                case "Medium": return "medium";
+                case "High": return "high";
+                case "Critical": return "critical";
+                default: return "";
+            }
+        }
+
+        // Display all users on page load
+        displayUsers(users);
     </script>
 
 </body>

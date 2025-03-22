@@ -3,199 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FBI TEAM ROBLOX Criminal Database</title>
+    <title>Mafia List</title>
     <style>
+        /* General Styles */
         body {
-            background-color: #0b0f19;
+            background-color: #0a0a0a;
             color: white;
-            font-family: "Arial", sans-serif;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #111;
+            height: 100vh;
+            overflow-y: auto;
+            padding-top: 20px;
+            position: fixed;
+        }
+
+        .sidebar h2 {
             text-align: center;
-            padding-top: 30px;
+            margin-bottom: 20px;
         }
 
-        #header {
-            font-size: 24px;
-            font-weight: bold;
-            background-color: #141922;
+        .mafia-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mafia-list li {
             padding: 15px;
-            border-bottom: 3px solid #7289da;
-        }
-
-        #search-container {
-            margin: 20px auto;
-            width: 60%;
-            background-color: #141922;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        input {
-            width: 70%;
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid white;
-            background-color: #1e232a;
-            color: white;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #d9534f;
-            color: white;
-            border: none;
+            border-bottom: 1px solid #222;
             cursor: pointer;
-            border-radius: 5px;
-            margin: 5px;
-        }
-
-        #results {
-            margin-top: 20px;
-        }
-
-        .embed-box {
-            background-color: #141922;
-            border-left: 6px solid #7289da;
-            border-radius: 8px;
-            padding: 15px;
-            width: 60%;
-            text-align: left;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-            margin: 10px auto;
+            transition: 0.3s;
             display: flex;
             align-items: center;
         }
 
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-right: 15px;
-            border: 2px solid white;
+        .mafia-list li:hover {
+            background: #222;
         }
 
-        .embed-content {
-            flex-grow: 1;
-        }
-
-        .embed-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .embed-description {
-            font-size: 16px;
-            color: #b9bbbe;
-        }
-
-        .highlight {
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .threat-level {
-            font-weight: bold;
-            padding: 5px;
+        .mafia-list img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
             border-radius: 5px;
-            display: inline-block;
-            margin-top: 5px;
         }
 
-        .low { background-color: green; color: white; }
-        .medium { background-color: orange; color: black; }
-        .high { background-color: red; color: white; }
-        .critical { background-color: darkred; color: white; }
+        /* Main Content */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+        }
+
+        .mafia-details {
+            display: none;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .mafia-details h2 {
+            margin-top: 0;
+        }
+
+        .mafia-details a {
+            color: #7289da;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel img {
+            width: 100%;
+            display: none;
+            border-radius: 8px;
+        }
+
+        .carousel img.active {
+            display: block;
+        }
+
+        .carousel .prev, .carousel .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .carousel .prev {
+            left: 10px;
+        }
+
+        .carousel .next {
+            right: 10px;
+        }
+
+        /* Background Design */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .fbi-logo {
+            position: absolute;
+            width: 120px;
+            opacity: 0.1;
+        }
+
+        .fbi-top-left { top: 10px; left: 10px; }
+        .fbi-top-right { top: 10px; right: 10px; }
+        .fbi-bottom-left { bottom: 10px; left: 10px; }
+        .fbi-bottom-right { bottom: 10px; right: 10px; }
+
+        .light-effect {
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            background: white;
+            opacity: 0.4;
+            animation: floatUp 5s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh); opacity: 0.4; }
+            to { transform: translateY(-10px); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="header">FBI TEAM ROBLOX Criminal Database</div>
-
-    <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Search for a suspect...">
-        <button onclick="search()">🔍 Search</button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Mafia List</h2>
+        <ul class="mafia-list">
+            <li onclick="showDetails('LC Black Region', 'https://www.roblox.com/communities/32947012/LC-Black-Region#!/about', 'A powerful mafia ruling the dark corners of the city.', ['image1.jpg', 'image2.jpg'])">
+                <img src="lc_black_logo.png" alt="LC Black">
+                LC Black Region
+            </li>
+            <li onclick="showDetails('Staff Team', 'https://www.roblox.com/communities/33657066/Staff-Team#!/about', 'An elite enforcement team maintaining order.', ['image3.jpg', 'image4.jpg'])">
+                <img src="staff_logo.png" alt="Staff Team">
+                Staff Team
+            </li>
+            <li onclick="showDetails('彡Slayers彡', 'https://www.roblox.com/communities/33703067/91#!/about', 'A deadly assassin group feared by all.', ['image5.jpg', 'image6.jpg'])">
+                <img src="slayers_logo.png" alt="Slayers">
+                彡Slayers彡
+            </li>
+        </ul>
     </div>
 
-    <div id="results"></div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="mafia-details" id="mafia-details">
+            <h2 id="mafia-name"></h2>
+            <a id="mafia-link" href="#" target="_blank"></a>
+            <p id="mafia-description"></p>
+
+            <!-- Image Carousel -->
+            <div class="carousel">
+                <button class="prev" onclick="prevImage()">❮</button>
+                <img id="carousel-image" class="active" src="">
+                <button class="next" onclick="nextImage()">❯</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Design -->
+    <div class="background">
+        <img src="images/fbi-logo.png" class="fbi-logo fbi-top-left">
+        <img src="images/fbi-logo.png" class="fbi-logo fbi-top-right">
+        <img src="images/fbi-logo.png" class="fbi-logo fbi-bottom-left">
+        <img src="images/fbi-logo.png" class="fbi-logo fbi-bottom-right">
+    </div>
 
     <script>
-        const users = [
-            { username: "ItsWillian", reason: "2x Firing on Officer, 1x Bank Robbery, 1x Robbery", details: "N/A", threat: "High" },
-            { username: "ExploitBan", reason: "Officer murders, Agent murders and is a mafia member.", details: "N/A", threat: "Critical" },
-            { username: "Akori4e", reason: "Shooting multiple officers and FBI members", details: "Very dangerous.", threat: "Critical" },
-            { username: "LUKE_R2D2", reason: "Murdering an Agent", details: "Suspect said they're from TPC.", threat: "High" }
-        ];
+        let images = [];
+        let currentIndex = 0;
 
-        async function search() {
-            let query = document.getElementById("search-bar").value.trim().toLowerCase();
-            let resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = ""; // Clear previous results
+        function showDetails(name, link, description, imageArray) {
+            document.getElementById('mafia-name').textContent = name;
+            document.getElementById('mafia-link').textContent = "Visit Roblox Group";
+            document.getElementById('mafia-link').href = link;
+            document.getElementById('mafia-description').textContent = description;
+            document.getElementById('mafia-details').style.display = "block";
 
-            let matchedUsers = users.filter(user => user.username.toLowerCase().includes(query));
-
-            if (matchedUsers.length === 0) {
-                resultsDiv.innerHTML = `
-                    <div class="embed-box">
-                        <div class="embed-title">❌ No Results Found</div>
-                        <div class="embed-description">No results found for "<b>${query}</b>". Try another search.</div>
-                    </div>
-                `;
-                return;
-            }
-
-            for (const user of matchedUsers) {
-                let threatClass = getThreatClass(user.threat);
-                let avatarUrl = await getRobloxAvatar(user.username);
-
-                resultsDiv.innerHTML += `
-                    <div class="embed-box">
-                        <img class="avatar" src="${avatarUrl}" alt="Avatar">
-                        <div class="embed-content">
-                            <div class="embed-title">🔍 Search Result: ${user.username}</div>
-                            <div class="embed-description">
-                                <span class="highlight">Username:</span> ${user.username}<br>
-                                <span class="highlight">Reason:</span> ${user.reason}<br>
-                                <span class="highlight">Details:</span> ${user.details}<br>
-                                <span class="highlight">Threat Level:</span> <span class="threat-level ${threatClass}">${user.threat}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
+            images = imageArray;
+            currentIndex = 0;
+            document.getElementById('carousel-image').src = images[currentIndex];
         }
 
-        function getThreatClass(level) {
-            switch (level) {
-                case "Low": return "low";
-                case "Medium": return "medium";
-                case "High": return "high";
-                case "Critical": return "critical";
-                default: return "";
-            }
+        function prevImage() {
+            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
+            document.getElementById('carousel-image').src = images[currentIndex];
         }
 
-        async function getRobloxAvatar(username) {
-            try {
-                let userResponse = await fetch("https://users.roblox.com/v1/usernames/users", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
-                });
-
-                let userData = await userResponse.json();
-                if (!userData.data.length) return "https://tr.rbxcdn.com/default_avatar.png"; // Default image
-
-                let userId = userData.data[0].id;
-                return `https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=150&height=150&format=png`;
-            } catch (error) {
-                console.error("Error fetching avatar:", error);
-                return "https://tr.rbxcdn.com/default_avatar.png"; // Default image
-            }
+        function nextImage() {
+            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
+            document.getElementById('carousel-image').src = images[currentIndex];
         }
+
+        // Light effect animation
+        setInterval(() => {
+            let light = document.createElement("div");
+            light.classList.add("light-effect");
+            light.style.left = `${Math.random() * 100}vw`;
+            document.body.appendChild(light);
+            setTimeout(() => light.remove(), 5000);
+        }, 500);
     </script>
 
 </body>
